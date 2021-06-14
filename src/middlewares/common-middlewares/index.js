@@ -1,10 +1,10 @@
 const jsonwebtoken = require('jsonwebtoken');
 
 exports.requireSignin = (req, res, next) => {
-    if (!req.headers.accesstoken) {
+    if (!req.headers.authorization) {
         return res.status(400).json({ message: "Authorization required" });
     }
-    const token = req.headers.accesstoken.split(" ")[1];
+    const token = req.headers.authorization.split(" ")[1];
     const decodedDetails = jsonwebtoken.verify(token, process.env.SECRET_OR_PRIVATE_KEY, (err, decoded) => {
         if (err) {
             //This will return response if any problem with decoding token or jwt expired.

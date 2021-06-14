@@ -11,8 +11,8 @@ exports.signup = (req, res) => {
             }
             else if (error) {
                 return res.status(400).json({
-                    message: "Something went wrong while finding Admin details...",
-                    error: error
+                    error: "Something went wrong while finding Admin details...",
+                    errorStatus: error
                 });
             }
 
@@ -35,7 +35,7 @@ exports.signup = (req, res) => {
             _user.save((error, data) => {
                 if (error) {
                     return res.status(400).json({
-                        message: "Something went wrong while creating..."
+                        error: "Something went wrong while creating..."
                     });
                 }
 
@@ -59,6 +59,7 @@ exports.signin = (req, res) => {
                         { _id: user._id, role: user.role }, process.env.SECRET_OR_PRIVATE_KEY, { expiresIn: '1h' }
                     );
                     const { firstName, lastName, fullName, email, role } = user;
+                    res.cookie('token', token, { expiresIn: '1h' })
                     res.status(200).json({
                         token,
                         user: {
@@ -75,3 +76,12 @@ exports.signin = (req, res) => {
             }
         });
 };
+
+
+exports.signout = (req, res) => {
+    // console.log("adminAuth.js signout");
+    res.clearCookie('token');
+    return res.status(200).json({
+        message: "Signout Successful..."
+    })
+}
