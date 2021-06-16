@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');//changing to bcryptjs due to Python dependancy error
 
 const userSchema = new mongoose.Schema({
     firstName: {

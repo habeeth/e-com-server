@@ -25,7 +25,7 @@ exports.getAllCategory = (req, res) => {
             if (error) res.status(400).json({ message: "Error while Fetching all category...", error: error });
             if (categories) {
                 let categoriesList = structureResultByRecursiveFn(categories);
-                res.status(200).json({ data: categoriesList });
+                res.status(200).json({ categoriesList: categoriesList });
             }
         });
 };

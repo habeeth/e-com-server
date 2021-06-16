@@ -8,7 +8,7 @@ router.post('/admin/signup', validateSignUpRequest, isRequestValidated, signup);
 
 router.post('/admin/signin', validateSigninRequest, isRequestValidated, signin);
 
-router.post('/admin/signout', requireSignin, signout);
+router.post('/admin/signout', signout);//removed requireSignin, as this method returns false incase of expired tokens,
 
 // router.post('/requireSignin', requireSignin, (req, res) => {
 //     res.status(200).json({
