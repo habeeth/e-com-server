@@ -46,6 +46,7 @@ structureResultByRecursiveFn = (categories, parentId = null) => {
             _id: i._id,
             name: i.name,
             slug: i.slug,
+            parentId: i.parentId,
             children: structureResultByRecursiveFn(categories, i._id)
         });
     }
