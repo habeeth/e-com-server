@@ -1,9 +1,11 @@
 const UserModel = require('../../models/userModel');
 const jsonwebtoken = require('jsonwebtoken');
+const bcryptjs = require('bcryptjs');
+
 exports.signup = (req, res) => {
 
     UserModel.findOne({ email: req.body.email })
-        .exec((error, user) => {
+        .exec(async (error, user) => {
             if (user) {
                 return res.status(400).json({
                     message: "Admin Already Exists..."
@@ -23,11 +25,13 @@ exports.signup = (req, res) => {
                 password
             } = req.body;
 
+            const hash_password = await bcryptjs.hash(password, 10);
+
             const _user = new UserModel({
                 firstName,
                 lastName,
                 email,
-                password,
+                hash_password,
                 username: Math.random().toString(),
                 role: "admin"
             });

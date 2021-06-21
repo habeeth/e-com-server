@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');//changing to bcryptjs due to Python dependancy error
+const bcryptjs = require('bcryptjs');//changing to bcryptjs due to Python dependancy error
 
 const userSchema = new mongoose.Schema({
     firstName: {
@@ -53,11 +53,13 @@ const userSchema = new mongoose.Schema({
 //     .set((password) => {
 //         this.hash_password = bcrypt.hashSync(password, 10);
 //     });
-userSchema.virtual('password').set(
-    function (password) {
-        this.hash_password = bcrypt.hashSync(password, 10);
-    }
-);
+
+//moving the hash_password generation logic to controller file for async operation
+// userSchema.virtual('password').set(
+//     function (password) {
+//         this.hash_password = bcrypt.hashSync(password, 10);
+//     }
+// );
 
 userSchema.virtual("fullName").get(
     function () {
@@ -71,9 +73,10 @@ userSchema.virtual("fullName").get(
 //     }
 // };
 
+//using bcryptjs.compare method for async flexibility
 userSchema.methods = {
-    authenticate: function (password) {
-        const result = bcrypt.compareSync(password, this.hash_password);
+    authenticate: async function (password) {
+        const result = await bcryptjs.compare(password, this.hash_password);
         // console.log("result",result);
         return result;
     }
