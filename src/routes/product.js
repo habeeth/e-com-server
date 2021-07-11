@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { createProduct } = require('../controllers/product');
+const { createProduct, getProductsBySlug } = require('../controllers/product');
 const { requireSignin, adminValidate, allowAllUsers } = require('../middlewares/common-middlewares');
 const multer = require('multer');
 // const upload = multer({ dest: 'uploads/' });
@@ -23,6 +23,6 @@ let upload = multer({ storage: storage });
 //upload.single('productPicture') -- for single picture upload
 router.post('/product/create', requireSignin, adminValidate, upload.array('productPicture'), createProduct);
 // router.get('/product/fetch', requireSignin, allowAllUsers, getAllProduct);
-
+router.get('/products/:slug', getProductsBySlug);
 
 module.exports = router;
